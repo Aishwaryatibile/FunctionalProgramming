@@ -1,0 +1,549 @@
+Microsoft Windows [Version 10.0.19044.2486]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Prathmesh>jshell
+|  Welcome to JShell -- Version 19.0.1
+|  For an introduction type: /help intro
+
+jshell> System.out.println("Hello");
+Hello
+
+jshell> List<Integer> numbers = List.of(12,44,87,9,5,34)
+numbers ==> [12, 44, 87, 9, 5, 34]
+
+jshell> numbers.stream().reduce(0, (x,y) -> x+y) // sum of all
+$3 ==> 191
+
+jshell> numbers.stream().reduce(0, (x,y) -> x) // 1st vlue
+$4 ==> 0
+
+jshell> numbers.stream().reduce(0, (x,y) -> y)//last
+$5 ==> 34
+
+jshell> numbers.stream().reduce(0, (x,y) -> x>y?x:y)//max number
+$6 ==> 87
+
+jshell> numbers.stream().reduce(Integer.MIN_VALUE, (x,y) -> x>y?x:y) //for +ve and -ve both numbers
+$7 ==> 87
+
+jshell> numbers.stream().reduce(Integer.MIN_VALUE, (x,y) -> x>y ? y:x)// min number in both +ve and -ve
+$8 ==> -2147483648
+
+jshell> numbers.stream().reduce(Integer.MAX_VALUE, (x,y) -> x>y ? y:x)// min +ve
+$9 ==> 5
+
+jshell> numbers
+numbers ==> [12, 44, 87, 9, 5, 34]
+
+jshell>jshell>  List<Integer> numbers = List.of(12,44,87,9,5,34,44,12)
+numbers ==> [12, 44, 87, 9, 5, 34, 44, 12]
+
+jshell> numbers.stream().distinct().forEach(System.out::println)
+12
+44
+87
+9
+5
+34
+
+
+jshell> numbers.stream().sorted().forEach(System.out::println)
+5
+9
+12
+12
+34
+44
+44
+87
+
+
+jshell> numbers.stream().distinct().sorted().forEach(System.out::println)
+5
+9
+12
+34
+44
+87
+
+jshell> List<String> courses = List.of("Spring", "Spring boot", "Azure", "Kubernetes", "Docker", "API","API","Microservices");
+courses ==> [Spring, Spring boot, Azure, Kubernetes, Docker, API, API, Microservices]
+
+jshell> courses.stream().sorted()
+$10 ==> java.util.stream.SortedOps$OfRef@6438a396
+
+jshell> courses.stream().sorted().forEach(System.out::println)
+API
+API
+Azure
+Docker
+Kubernetes
+Microservices
+Spring
+Spring boot
+
+jshell> courses.stream().distinct().sorted().forEach(System.out::println)
+API
+Azure
+Docker
+Kubernetes
+Microservices
+Spring
+Spring boot
+
+jshell>
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Functional Interfaces
+
+shell> Consumer<String> consumer = () -> {}
+|  Error:
+|  incompatible types: incompatible parameter types in lambda expression
+|  Consumer<String> consumer = () -> {};
+|                              ^------^
+
+jshell> Consumer<String> consumer = (str) -> {}
+consumer ==> $Lambda$19/0x000000080100a9f0@bebdb06
+
+
+jshell> Consumer<String> consumer = (str) -> System.out::println
+|  Error:
+|  incompatible types: bad return type in lambda expression
+|      void is not a functional interface
+|  Consumer<String> consumer = (str) -> System.out::println;
+|                                       ^-----------------^
+
+jshell> Consumer<String> consumer = (str) -> System.out.println(str)
+consumer ==> $Lambda$20/0x000000080100a400@45283ce2
+
+jshell>
+
+jshell> BiConsumer<String,String> consumer = (str,str2) -> System.out.println(str)
+consumer ==> $Lambda$21/0x000000080100b800@736e9adb
+
+jshell> Supplier<String> supplier = () -> "Aishwarya"
+supplier ==> $Lambda$22/0x000000080100bc08@4ccabbaa
+
+jshell> Supplier<String> supplier = () -> {"Aishwarya"}
+|  Error:
+|  not a statement
+|  Supplier<String> supplier = () -> {"Aishwarya"};
+|                                     ^---------^
+|  Error:
+|  ';' expected
+|  Supplier<String> supplier = () -> {"Aishwarya"};
+|                                                ^
+
+jshell> Supplier<String> supplier = () -> {"Aishwarya";}
+|  Error:
+|  not a statement
+|  Supplier<String> supplier = () -> {"Aishwarya";};
+|                                     ^---------^
+|  Error:
+|  incompatible types: bad return type in lambda expression
+|      missing return value
+|  Supplier<String> supplier = () -> {"Aishwarya";};
+|                              ^------------------^
+
+jshell> Supplier<String> supplier = () -> {return "Aishwarya";}
+supplier ==> $Lambda$22/0x000000080100bc08@4ccabbaa
+
+jshell>jshell> Consumer<String> consumer = (str) -> System.out.println(str);System.out.println(str)
+consumer ==> $Lambda$23/0x000000080100c000@5fa7e7ff
+|  Error:
+|  cannot find symbol
+|    symbol:   variable str
+|  System.out.println(str)
+|                     ^-^
+
+jshell> Consumer<String> consumer = (str) -> {System.out.println(str);System.out.println(str)}
+|  Error:
+|  ';' expected
+|  Consumer<String> consumer = (str) -> {System.out.println(str);System.out.println(str)};
+|                                                                                       ^
+
+jshell> Consumer<String> consumer = (str) -> {System.out.println(str);System.out.println(str);}
+consumer ==> $Lambda$24/0x000000080100c218@27f8302d
+
+jshell>
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Creating Streams using Stream of method and for Arrays
+
+jshell> List<Integer> numbers = List.of(12,9,3,23,5,7,15,4)
+numbers ==> [12, 9, 3, 23, 5, 7, 15, 4]
+
+jshell> numbers.stream()
+$4 ==> java.util.stream.ReferencePipeline$Head@45283ce2
+
+jshell>  Stream.of(12,9,3,23,5,7,15,4).count()
+$5 ==> 8
+
+jshell> Stream.of(12,9,3,23,5,7,15,4).reduce(0, Integer::sum)
+$6 ==> 78
+
+jshell> Stream.of(12,9,3,23,5,7,15,4)
+$7 ==> java.util.stream.ReferencePipeline$Head@2d38eb89 // wrapper classes
+
+jshell>
+
+jshell> Arrays.stream(numArray)
+$9 ==> java.util.stream.IntPipeline$Head@4d76f3f8 -- contain primitive int values
+
+jshell>
+
+jshell> Arrays.stream(numArray).sum()
+$11 ==> 78
+
+jshell> Arrays.stream(numArray).average()
+$12 ==> OptionalDouble[9.75]
+
+jshell> Arrays.stream(numArray).min()
+$13 ==> OptionalInt[3]
+
+jshell> Arrays.stream(numArray).max()
+$14 ==> OptionalInt[23]
+
+jshell>
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Creating Stream for 1st 100 numbers, squares of numbers 
+
+jshell> IntStream.range(1,10) // range operation excludes the last number so it will take only 1-9 numbers
+$15 ==> java.util.stream.IntPipeline$Head@22927a81
+
+jshell> IntStream.range(1,10).sum()
+$16 ==> 45
+
+jshell>
+jshell> IntStream.rangeClosed(1,10).sum() // it will include the last number as well
+$17 ==> 55
+
+jshell>
+
+jshell> IntStream.rangeClosed(1,10).sum()
+$17 ==> 55
+
+jshell>jshell> IntStream.iterate(2,num -> num +2).limit(10).peek(System.out::println).sum() 
+2
+4
+6
+8
+10
+12
+14
+16
+18
+20
+$21 ==> 110
+
+jshell>
+jshell> IntStream.iterate(2,num -> num * 2).limit(10).peek(System.out::println).sum()
+2
+4
+8
+16
+32
+64
+128
+256
+512
+1024
+$22 ==> 2046
+
+jshell>
+jshell> IntStream.iterate(2,num -> num * 2).limit(10).collect(Collectors.toList())
+|  Error:
+|  method collect in interface java.util.stream.IntStream cannot be applied to given types;
+|    required: java.util.function.Supplier<R>,java.util.function.ObjIntConsumer<R>,java.util.function.BiConsumer<R,R>
+|    found:    java.util.stream.Collector<java.lang.Object,capture#3 of ?,java.util.List<java.lang.Object>>
+|    reason: cannot infer type-variable(s) R
+|      (actual and formal argument lists differ in length)
+|  IntStream.iterate(2,num -> num * 2).limit(10).collect(Collectors.toList())
+|  ^---------------------------------------------------^
+|  Error:
+|  incompatible types: cannot infer type-variable(s) R
+|      (argument mismatch; no instance(s) of type variable(s) capture#4 of ?,T exist so that java.util.stream.Collector<T,?,java.util.List<T>> conforms to java.util.function.Supplier<R>)
+|  IntStream.iterate(2,num -> num * 2).limit(10).collect(Collectors.toList())
+|  ^------------------------------------------------------------------------^
+
+jshell> IntStream.iterate(2,num -> num * 2).limit(10).boxed().collect(Collectors.toList()) //from primitive array to List
+$24 ==> [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
+
+jshell>
+jshell> Integer.MAX_VALUE
+$25 ==> 2147483647
+
+jshell> Integer.MIN_VALUE
+$26 ==> -2147483648
+
+jshell>
+jshell> Long.MAX_VALUE
+$27 ==> 9223372036854775807
+
+jshell> Long.MIN_VALUE
+$28 ==> -9223372036854775808
+
+jshell>
+jshell> IntStream.rangeClosed(1,50).reduce(1,(x,y) -> x*y) // ans is 0 because int limit is exceeded
+$29 ==> 0
+
+jshell> LongStream.rangeClosed(1,50).reduce(1,(x,y) -> x*y)
+$30 ==> -3258495067890909184
+
+jshell>
+
+jshell> LongStream.rangeClosed(1,50).reduce(1,(x,y) -> x*y)
+$30 ==> -3258495067890909184
+
+jshell> LongStream.rangeClosed(1,50).reduce(1L,(x,y) -> x*y)
+$31 ==> -3258495067890909184
+
+jshell> LongStream.rangeClosed(1,10).reduce(1,(x,y) -> x*y)
+$32 ==> 3628800
+
+jshell> LongStream.rangeClosed(1,20).reduce(1,(x,y) -> x*y)
+$33 ==> 2432902008176640000
+
+jshell> LongStream.rangeClosed(1,40).reduce(1,(x,y) -> x*y)
+$34 ==> -70609262346240000
+
+jshell>
+
+jshell> BigInteger
+Signatures:
+java.math.BigInteger
+
+<press tab again to see documentation>
+jshell> BigInteger.
+ONE              TEN              TWO              ZERO             class            probablePrime(   valueOf(
+
+jshell> LongStream.rangeClosed(1,50).mapToObj(BigInteger::valueOf).reduce(BigInteger.ONE, BigInteger::multiply)
+$35 ==> 30414093201713378043612608166064768844377641568960512000000000000
+
+jshell>
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+Joining Strings with joining and playing with flatmap
+
+jshell> List<String> courses = List.of("Spring", "Spring boot", "Azure", "Kubernetes", "Docker", "API", "Microservices");
+courses ==> [Spring, Spring boot, Azure, Kubernetes, Docker, API, Microservices]
+
+jshell> courses.stream().collect(Collectors.joining(" ")) // join string with space
+$40 ==> "Spring Spring boot Azure Kubernetes Docker API Microservices"
+
+jshell> courses.stream().collect(Collectors.joining(", "))//join with comma
+$41 ==> "Spring, Spring boot, Azure, Kubernetes, Docker, API, Microservices"
+
+jshell> "Spring".split("") //string split
+$42 ==> String[6] { "S", "p", "r", "i", "n", "g" }
+
+// create a stream and try to split each element
+
+jshell> courses.stream().map(course-> course.split("")).collect(Collectors.toList()) 
+$43 ==> [[Ljava.lang.String;@39ed3c8d, [Ljava.lang.String;@71dac704, [Ljava.lang.String;@123772c4, [Ljava.lang.String;@2d363fb3, [Ljava.lang.String;@7d6f77cc, [Ljava.lang.String;@5aaa6d82, [Ljava.lang.String;@73a28541]
+
+The reason behind why it did not worked as expected is when we do split it returns string array and the result of entire map operation here
+is actually a stream of String arrays and we want stream of split characters(one stream ehich contains all the elements)
+
+result of map --{{"S","p","r","i","n","g"},{"S","p","r","i","n","g","b","o","o","t"},{"A","z","u","r","e"},{"K","u","b","e", 
+					"r","n","e","t","e","s"},{"D","o","c","k","e","r"},{"A","P","I"},{"M","i","c","r","o","s","e","r","v","i","c","e","s"}}	
+					
+we want -- {"S","p","r","i","n","g","S","p","r","i","n","g","b","o","o","t","A","z","u","r","e","K","u","b","e", 
+			"r","n","e","t","e","s","D","o","c","k","e","r","A","P","I","M","i","c","r","o","s","e","r","v","i","c","e","s"}
+					
+
+jshell> courses.stream().map(course-> course.split(""))
+$44 ==> java.util.stream.ReferencePipeline$3@606d8acf
+
+jshell> 
+ 
+//break the Stream of string arrays into stream of strings using flatmap
+flatmap - each element of stream replaced with content of mapped stream. Mapping Function -> (Arrays::stream)
+
+jshell> courses.stream().map(course -> course.split("")).flatMap(Arrays::stream).collect(Collectors.toList());
+$3 ==> [S, p, r, i, n, g, S, p, r, i, n, g,  , b, o, o, t, A, z, u, r, e, K, u, b, e, r, n, e, t, e, s, 
+		D, o, c, k, e, r, A, P, I, M, i, c, r, o, s, e, r, v, i, c, e, s]
+
+jshell> courses.stream().map(course -> course.split("")).flatMap(Arrays::stream).distinct().collect(Collectors.toList());
+$4 ==> [S, p, r, i, n, g,  , b, o, t, A, z, u, e, K, s, D, c, k, P, I, M, v]
+
+jshell>
+
+//other use cases of flatmap
+Expected output- Tuples with same length -[[Spring, Docker],[API,AWS],[API,PCF],[AWS,API,[PCF,API], [PCF,AWS],[Docker,Spring] 
+identify pairs of these courses which have same no. of characters present in them. All the string which have same length we would 
+want to create tuples around them.
+
+jshell> List<String> courses = List.of("Spring", "Spring boot", "Azure", "Kubernetes", "PCF", "Docker", "API", "Microservices");
+courses ==> [Spring, Spring boot, Azure, Kubernetes, PCF, Docker, API, Microservices]
+
+jshell> List<String> courses2 = List.of("Spring", "Spring boot", "Azure", "Kubernetes", "PCF", "Docker", "API", "Microservices");
+courses2 ==> [Spring, Spring boot, Azure, Kubernetes, PCF, Docker, API, Microservices]
+
+jshell> courses.stream().flatMap(course -> courses2.stream().map(course2 -> List.of(course, course2))).collect(Collectors.toList());
+$12 ==> [[Spring, Spring], [Spring, Spring boot], [Spring, Azure], [Spring, Kubernetes], [Spring, PCF], [Spring, Docker], 
+		 [Spring, API], [Spring, Microservices], [Spring boot, Spring], [Spring boot, Spring boot], [Spring boot, Azure],
+		 [Spring boot, Kubernetes], [Spring boot, PCF], [Spring boot, Docker], [Spring boot, API], [Spring boot, Microservices], 
+		 [Azure, Spring], [Azure, Spring boot], [Azure, Azure], [Azure, Kubernetes], [Azure, PCF], [Azure, Docker], [Azure, API], 
+		 [Azure, Microservices], [Kubernetes, Spring], [Kubernetes, Spring boot], [Kubernetes, Azure], [Kubernetes, Kubernetes],
+		 [Kubernetes, PCF], [Kubernetes, Docker], [Kubernetes, API], [Kubernetes, M ... , Spring], [API, Spring boot], [API, Azure], 
+		 [API, Kubernetes], [API, PCF], [API, Docker], [API, API], [API, Microservices], [Microservices, Spring], [Microservices, Spring boot],
+		 [Microservices, Azure], [Microservices, Kubernetes], [Microservices, PCF], [Microservices, Docker], [Microservices, API], 
+		 [Microservices, Microservices]]
+		 
+jshell> courses.stream().flatMap(course -> courses2.stream().map(course2 -> List.of(course, course2))).filter(list -> !list.get(0).equals(list.get(1))).collect(Collecto
+r .toList());
+$14 ==> [[Spring, Spring boot], [Spring, Azure], [Spring, Kubernetes], [Spring, PCF], [Spring, Docker], [Spring, API], [Spring, Microservices],
+		 [Spring boot, Spring], [Spring boot, Azure], [Spring boot, Kubernetes], [Spring boot, PCF], [Spring boot, Docker], [Spring boot, API],
+		 [Spring boot, Microservices], [Azure, Spring], [Azure, Spring boot], [Azure, Kubernetes], [Azure, PCF], [Azure, Docker], [Azure, API], 
+		 [Azure, Microservices], [Kubernetes, Spring], [Kubernetes, Spring boot], [Kubernetes, Azure], [Kubernetes, PCF], [Kubernetes, Docker],
+		 [Kubernetes, API], [Kubernetes, Microservices], [PCF, Spring], [PCF, Spring boot], [PCF, Azure], [PCF, Kubernetes], 
+		 [PCF, ... [Docker, API], [Docker, Microservices], [API, Spring], [API, Spring boot], [API, Azure], [API, Kubernetes], [API, PCF],
+		 [API, Docker], [API, Microservices], [Microservices, Spring], [Microservices, Spring boot], [Microservices, Azure], 
+		 [Microservices, Kubernetes], [Microservices, PCF], [Microservices, Docker], [Microservices, API]]
+
+jshell>
+
+jshell> courses.stream().flatMap(course -> courses2.stream().map(course2 -> List.of(course, course2))).filter(list -> list.get(0).equals(list.get(1))).collect(Collector
+s.toList());
+$13 ==> [[Spring, Spring], [Spring boot, Spring boot], [Azure, Azure], [Kubernetes, Kubernetes], [PCF, PCF], [Docker, Docker], 
+		  [API, API], [Microservices, Microservices]]
+
+jshell> 
+jshell> courses.stream().flatMap(course -> courses2.stream().map(course2 -> List.of(course, course2)))
+						.filter(list -> !list.get(0).equals(list.get(1))).collect(Collector .toList());
+$14 ==> [[Spring, Spring boot], [Spring, Azure], [Spring, Kubernetes], [Spring, PCF], [Spring, Docker], [Spring, API], 
+		 [Spring, Microservices], [Spring boot, Spring], [Spring boot, Azure], [Spring boot, Kubernetes], [Spring boot, PCF], 
+		 [Spring boot, Docker], [Spring boot, API], [Spring boot, Microservices], [Azure, Spring], [Azure, Spring boot], 
+		 [Azure, Kubernetes], [Azure, PCF], [Azure, Docker], [Azure, API], [Azure, Microservices], [Kubernetes, Spring], 
+		 [Kubernetes, Spring boot], [Kubernetes, Azure], [Kubernetes, PCF], [Kubernetes, Docker], [Kubernetes, API], 
+		 [Kubernetes, Microservices], [PCF, Spring], [PCF, Spring boot], [PCF, Azure], [PCF, Kubernetes], [PCF, ... [Docker, API],
+		 [Docker, Microservices], [API, Spring], [API, Spring boot], [API, Azure], [API, Kubernetes], [API, PCF], [API, Docker], 
+		 [API, Microservices], [Microservices, Spring], [Microservices, Spring boot], [Microservices, Azure], [Microservices, Kubernetes], 
+		 [Microservices, PCF], [Microservices, Docker], [Microservices, API]]
+
+jshell>
+
+
+jshell> List<String> courses = List.of("Spring", "Spring boot", "Azure", "Kubernetes", "PCF", "Docker", "API", "Microservices","AWS");
+courses ==> [Spring, Spring boot, Azure, Kubernetes, PCF, Docker, API, Microservices, AWS]
+
+jshell> List<String> courses2 = List.of("Spring", "Spring boot", "Azure", "Kubernetes", "PCF", "Docker", "API", "Microservices","AWS");
+courses2 ==> [Spring, Spring boot, Azure, Kubernetes, PCF, Docker, API, Microservices, AWS]
+
+jshell> courses.stream().flatMap(course -> courses2.stream().filter(course2 -> course2.length() == course.length()).map(course2 -> List.of(course, course2))).filter(list -> !list.get(0).equals(list.get(1))).collect(Collectors.toList());
+$19 ==> [[Spring, Docker], [PCF, API], [PCF, AWS], [Docker, Spring], [API, PCF], [API, AWS], [AWS, PCF], [AWS, API]]
+
+jshell>
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Functional Programming and Performance- Intermediate Stream Operations are lazy
+intermediate opertations(filter,map,peek) injvara are lazy, they are not really executed when we excute any piece of code. 
+They executed only when we execute the terminal operation.(findFirst(),collect)
+
+jshell> List<String> courses = List.of("Spring", "Spring boot", "Azure", "Kubernetes", "PCF", "Docker", "API", "Microservices","AWS");
+courses2 ==> [Spring, Spring boot, Azure, Kubernetes, PCF, Docker, API, Microservices, AWS]
+
+jshell> courses.stream().filter(course -> course.length() > 11).map(String::toUpperCase).findFirst()
+$4 ==> Optional[MICROSERVICES]
+
+jshell> courses.stream().peek(System.out::println).filter(course -> course.length() > 11).map(String::toUpperCase)
+						.peek(System.out::println).findFirst()
+Spring
+Spring boot
+Azure
+Kubernetes
+PCF
+Docker
+API
+Microservices
+MICROSERVICES
+$5 ==> Optional[MICROSERVICES]
+
+jshell> courses.stream().peek(System.out::println).filter(course -> course.length() > 11).map(String::toUpperCase).peek(System.out::println)
+$6 ==> java.util.stream.ReferencePipeline$15@6438a396
+
+jshell>
+//$6 is variable here
+jshell> $6.findFirst();
+Spring
+Spring boot
+Azure
+Kubernetes
+PCF
+Docker
+API
+Microservices
+MICROSERVICES
+$7 ==> Optional[MICROSERVICES]  //result stored in $7 variable
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Modifying lists with repalceAll and removeIf
+
+jshell> List<String> courses = List.of("Spring", "Spring boot", "Azure", "Kubernetes", "PCF", "Docker", "API", "Microservices","AWS");
+courses ==> [Spring, Spring boot, Azure, Kubernetes, PCF, Docker, API, Microservices, AWS]
+
+jshell> courses.replaceAll(str -> str.toUpperCase())
+|  Exception java.lang.UnsupportedOperationException
+|        at ImmutableCollections.uoe (ImmutableCollections.java:142)
+|        at ImmutableCollections$AbstractImmutableList.replaceAll (ImmutableCollections.java:259)
+|        at (#10:1)
+ 
+jshell> List<String> modifyableCourses = new ArrayList(courses);
+|  Warning:
+|  unchecked call to ArrayList(java.util.Collection<? extends E>) as a member of the raw type java.util.ArrayList
+|  List<String> modifyableCourses = new ArrayList(courses);
+|                                   ^--------------------^
+|  Warning:
+|  unchecked conversion
+|    required: java.util.List<java.lang.String>
+|    found:    java.util.ArrayList
+|  List<String> modifyableCourses = new ArrayList(courses);
+|                                   ^--------------------^
+modifyableCourses ==> [Spring, Spring boot, Azure, Kubernetes, PCF, Docker, API, Microservices, AWS]
+
+jshell> modifyableCourses.replaceAll(str -> str.toUpperCase())
+
+jshell> modifyableCourses
+modifyableCourses ==> [SPRING, SPRING BOOT, AZURE, KUBERNETES, PCF, DOCKER, API, MICROSERVICES, AWS]
+
+jshell> modifyableCourses.removeIf(course -> course.length() < 6)
+$14 ==> true
+
+jshell> modifyableCourses
+modifyableCourses ==> [SPRING, SPRING BOOT, KUBERNETES, DOCKER, MICROSERVICES]
+
+jshell>
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Playing with files using functional programming
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
